@@ -1,15 +1,13 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/mister-turtle/golang-webapp-structure/evidence"
-	memory "github.com/mister-turtle/golang-webapp-structure/storage/memory"
-	"github.com/mister-turtle/golang-webapp-structure/webserver"
+	"github.com/mister-turtle/golang-webapp-structure/httpd"
+	"github.com/mister-turtle/golang-webapp-structure/storage/memory"
 )
 
 func main() {
@@ -21,17 +19,11 @@ func main() {
 
 	memoryRepository := memory.NewRepository()
 	iocService := evidence.NewIOCService(&memoryRepository.IOC)
-	webServer, err := webserver.NewServer(listenAddress, iocService)
+	webServer, err := httpd.NewServer(listenAddress, iocService)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = memoryRepository.IOC.Create(context.Background(), evidence.IOC{
-		Type:   "file-md5",
-		Value:  "12345",
-		Date:   time.Now(),
-		Source: "preseed",
-	})
 	log.Printf("Starting web server on %s:%d\n", *argListen, *argPort)
 	webServer.Start()
 
