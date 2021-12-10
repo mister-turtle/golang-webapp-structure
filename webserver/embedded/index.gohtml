@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Go - Embedded Assets</title>
+  <meta name="description" content="A simple demonstration of embedded assets">
+  <meta name="author" content="mister-turtle">
+
+  <meta property="og:title" content="Golang Webapp Layout Demo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.github.com/mister-turtle/">
+  <meta property="og:description" content="A simple demonstration a golang web app layout">  
+
+  <link rel="stylesheet" href="static/style.css">
+
+</head>
+
+<body>
+    <div id="page">
+        <div id="content">
+            <div id="tag-container">
+                <h1 id="tag">Indicators of Compromise</h1>
+                <form id="iocform" action="/" method="POST">
+                    <input type="text" id="iocType" name="iocType" placeholder="Type"><br>
+                    <input type="text" id="iocValue" name="iocValue" placeholder="Value"><br>
+                    <input type="text" id="iocSource" name="iocSource" placeholder="Source"><br>
+                    <input type="string" id="iocDate" name="iocDate" placeholder="Date">
+                    <button id="nowButton">Now</button><br>
+                    <button type="submit">Submit</button>
+                </form>
+
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Source</th>
+                    </tr>
+                    {{ range . }}
+                    <tr>
+                        <td>{{.Date.Format "Jan 02, 2006 15:04:05 UTC"}}</td>
+                        <td>{{.Type}}</td>
+                        <td>{{.Value}}</td>
+                        <td>{{.Source}}</td>
+                    </tr>
+                    {{ end }}
+                </table>
+            </div>            
+        </div>
+    </div>
+</body>
+<script>
+document.getElementById("nowButton").addEventListener("click", (e) => {    
+    currentDate = new Date();
+    document.getElementById("iocDate").value = currentDate.toISOString();
+    e.preventDefault();
+});
+</script>
+</html>
