@@ -11,7 +11,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/mister-turtle/golang-webapp-structure/domain/evidence"
+	"github.com/mister-turtle/golang-webapp-structure/evidence"
 )
 
 //go:embed embedded/*.gohtml

@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/mister-turtle/golang-webapp-structure/domain/evidence"
+	"github.com/mister-turtle/golang-webapp-structure/evidence"
 	memory "github.com/mister-turtle/golang-webapp-structure/storage/database_memory"
 	"github.com/mister-turtle/golang-webapp-structure/webserver"
 )

@@ -3,7 +3,7 @@ package webserver
 import (
 	"context"
 
-	"github.com/mister-turtle/golang-webapp-structure/domain/evidence"
+	"github.com/mister-turtle/golang-webapp-structure/evidence"
 )
 
 type iocService interface {

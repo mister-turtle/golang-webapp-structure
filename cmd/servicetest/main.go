@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/mister-turtle/golang-webapp-structure/domain/evidence"
+	"github.com/mister-turtle/golang-webapp-structure/evidence"
 	memory "github.com/mister-turtle/golang-webapp-structure/storage/database_memory"
 )
 
@@ -31,7 +31,7 @@ func main() {
 		panic(err)
 	}
 	for i, ioc := range iocs {
-		fmt.Printf("%02d: [%s] - %s (%s)\n", i, ioc.Discovered, ioc.Type, ioc.Value)
+		fmt.Printf("%02d: [%s] - %s (%s)\n", i, ioc.Date, ioc.Type, ioc.Value)
 	}
 
 }
