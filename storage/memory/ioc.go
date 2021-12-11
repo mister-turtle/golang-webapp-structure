@@ -6,15 +6,13 @@ import (
 	"github.com/mister-turtle/golang-webapp-structure/evidence"
 )
 
-type MemoryIOC struct {
-	IOCs []evidence.IOC
-}
+type MemoryIOC []evidence.IOC
 
 func (i *MemoryIOC) Create(_ context.Context, ip evidence.IOC) error {
-	i.IOCs = append(i.IOCs, ip)
+	*i = append(*i, ip)
 	return nil
 }
 
-func (i MemoryIOC) FindAll(_ context.Context) ([]evidence.IOC, error) {
-	return i.IOCs, nil
+func (i *MemoryIOC) FindAll(_ context.Context) ([]evidence.IOC, error) {
+	return *i, nil
 }
