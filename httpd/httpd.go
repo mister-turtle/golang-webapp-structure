@@ -2,7 +2,6 @@ package httpd
 
 import (
 	"embed"
-	"fmt"
 	"html/template"
 	"io/fs"
 	"log"
@@ -14,12 +13,6 @@ import (
 	"github.com/mister-turtle/golang-webapp-structure/evidence"
 )
 
-//go:embed embedded/*.gohtml
-var templateFS embed.FS
-
-//go:embed embedded/*.css
-var staticFS embed.FS
-
 type Server struct {
 	address    string
 	router     chi.Router
@@ -28,29 +21,26 @@ type Server struct {
 }
 
 func (s Server) GetIOCs(w http.ResponseWriter, r *http.Request) {
-
 	iocs, err := s.iocService.FindAll(r.Context())
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		log.Printf("error finding iocs: %s\n", err.Error())
+		log.Printf("error finding iocs: %s", err.Error())
 		return
 	}
 
-	fmt.Printf("%+v\n", iocs)
 	err = s.templates.ExecuteTemplate(w, "index.gohtml", iocs)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		log.Printf("error executing index template: %s\n", err.Error())
+		log.Printf("error executing index template: %s", err.Error())
 		return
 	}
 }
 
 func (s Server) NewIOC(w http.ResponseWriter, r *http.Request) {
-
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		log.Printf("error executing parsing IOC form: %s\n", err.Error())
+		log.Printf("error executing parsing IOC form: %s", err.Error())
 		return
 	}
 
@@ -64,10 +54,10 @@ func (s Server) NewIOC(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsDate, err := time.Parse("2006-01-02T15:04:05.999Z07:00", iocDate)
+	jsDate, err := time.Parse(time.RFC3339, iocDate)
 	if err != nil {
 		http.Error(w, "Invalid date format", http.StatusBadRequest)
-		log.Printf("error converting date format: %s\n", err.Error())
+		log.Printf("error converting date format: %s", err.Error())
 		return
 	}
 
@@ -75,9 +65,10 @@ func (s Server) NewIOC(w http.ResponseWriter, r *http.Request) {
 	err = s.iocService.Create(r.Context(), newIOC)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		log.Printf("error creating ioc: %s\n", err.Error())
+		log.Printf("error creating ioc: %s", err.Error())
 		return
 	}
+
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
@@ -85,8 +76,13 @@ func (s Server) Start() error {
 	return http.ListenAndServe(s.address, s.router)
 }
 
-func NewServer(addr string, iocService iocService) (Server, error) {
+//go:embed embedded/*.gohtml
+var templateFS embed.FS
 
+//go:embed embedded/*.css
+var staticFS embed.FS
+
+func NewServer(addr string, iocService iocService) (Server, error) {
 	newServer := Server{
 		address:    addr,
 		iocService: iocService,

@@ -1,62 +1,72 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Go - Embedded Assets</title>
-  <meta name="description" content="A simple demonstration of embedded assets">
-  <meta name="author" content="mister-turtle">
+        <title>Indicators of Compromise</title>
+        <meta name="author" content="mister-turtle">
 
-  <meta property="og:title" content="Golang Webapp Layout Demo">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.github.com/mister-turtle/">
-  <meta property="og:description" content="A simple demonstration a golang web app layout">  
+        <meta property="og:title" content="Go Webapp Layout Demo">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.github.com/mister-turtle/">
 
-  <link rel="stylesheet" href="static/style.css">
+        <link rel="stylesheet" href="static/style.css">
+    </head>
 
-</head>
+    <body>
+        <div id="container">
+            <div id="form">
+                <h1>Indicators of Compromise</h1>
+                <form id="ioc-new" action="/" method="POST">
+                    <input type="text" placeholder="Type" id="ioc-type" name="iocType">
+                    <input type="text" placeholder="Value" id="ioc-value" name="iocValue">
+                    <input type="text" placeholder="Source" id="ioc-source" name="iocSource">
+                    <div class="input-inline">
+                        <input type="text" placeholder="Date" id="ioc-date" name="iocDate">
+                        <button id="ioc-now">Now</button>
+                    </div>
+                    <input type="submit" value="Submit">
+            </div>
 
-<body>
-    <div id="page">
-        <div id="content">
-            <div id="tag-container">
-                <h1 id="tag">Indicators of Compromise</h1>
-                <form id="iocform" action="/" method="POST">
-                    <input type="text" id="iocType" name="iocType" placeholder="Type"><br>
-                    <input type="text" id="iocValue" name="iocValue" placeholder="Value"><br>
-                    <input type="text" id="iocSource" name="iocSource" placeholder="Source"><br>
-                    <input type="string" id="iocDate" name="iocDate" placeholder="Date">
-                    <button id="nowButton">Now</button><br>
-                    <button type="submit">Submit</button>
-                </form>
-
-                <table>
-                    <tr>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Value</th>
-                        <th>Source</th>
-                    </tr>
-                    {{ range . }}
-                    <tr>
-                        <td>{{.Date.Format "Jan 02, 2006 15:04:05 UTC"}}</td>
-                        <td>{{.Type}}</td>
-                        <td>{{.Value}}</td>
-                        <td>{{.Source}}</td>
-                    </tr>
-                    {{ end }}
-                </table>
-            </div>            
+            <div id="table">
+                <h1>Past Items</h1>
+                <div class="table-header">
+                    <p>Date</p>
+                    <p>Type</p>
+                    <p>Value</p>
+                    <p>Source</p>
+                </div>
+                {{ range . }}
+                <div class="table-row">
+                    <p>
+                        {{.Date.Format "Jan 02, 2006"}}
+                        <br/>
+                        {{.Date.Format "15:04:05 PM"}}
+                    </p>
+                    <p>{{.Type}}</p>
+                    <p>{{.Value}}</p>
+                    <p>{{.Source}}</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="settings" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                </div>
+                {{ else }}
+                <div class="table-row">
+                    <p>No entries found...</p>
+                </div>
+                {{ end }}
+            </div>
         </div>
-    </div>
-</body>
-<script>
-document.getElementById("nowButton").addEventListener("click", (e) => {    
-    currentDate = new Date();
-    document.getElementById("iocDate").value = currentDate.toISOString();
-    e.preventDefault();
-});
-</script>
+        </div>
+    </body>
+    <script>
+        const iocNow = document.getElementById("ioc-now");
+        const iocDate = document.getElementById("ioc-date");
+        iocNow.addEventListener("click", (e) => {
+                    e.preventDefault()
+                    currentDate = new Date();
+                    iocDate.value = currentDate.toISOString();
+                });
+    </script>
 </html>

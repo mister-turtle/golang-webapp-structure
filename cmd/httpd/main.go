@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	argListen := flag.String("l", "0.0.0.0", "IP address to listen on")
+	argListen := flag.String("l", "127.0.0.1", "IP address to listen on")
 	argPort := flag.Int("p", 9000, "Port to listen on")
 	flag.Parse()
 
@@ -24,7 +24,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("Starting web server on %s:%d\n", *argListen, *argPort)
+	log.Printf("Starting web server on %s\n", listenAddress)
 	webServer.Start()
-
 }
